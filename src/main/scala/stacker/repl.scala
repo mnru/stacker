@@ -17,6 +17,10 @@ object Stack {
     o
   }
 
+  def peek: Any = {
+    stack.top
+  }
+
   def dup: Any = {
     val rv = stack.top
     this(rv)
@@ -51,7 +55,7 @@ class StackerEval extends Evaluator {
     commands.map { cmd =>
       cmd match {
         case "dup" => Stack.dup
-        case "." => println(Stack())
+        case "." => println(Stack.peek)
         case "q" => print(System.exit(0))
         case "+" => {
           // take two from Stack, add them, push them onto the stack.
