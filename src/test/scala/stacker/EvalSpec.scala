@@ -8,10 +8,11 @@ object EvalSpec extends Specification {
   "Eval" should {
     doBefore {
       Stack.clear()
+      SymbolTable.clear()
     }
 
     "1 1 + makes 2" >> {
-      eval.eval("1 1 +") mustEqual "2\nok"
+      eval.eval("1 1 +") mustEqual "\nok"
       Stack() mustEqual 2
     }
 
@@ -22,6 +23,18 @@ object EvalSpec extends Specification {
 
     ". does not remove anything from the Stack" >> {
       eval.eval("1 .") mustEqual "1\nok"
+      Stack.length mustEqual 1
+    }
+
+    ": defines a word" >> {
+      eval.eval(": add1 1 +") mustEqual "add1\nok"
+      SymbolTable("add1") mustEqual Some(" 1 +")
+    }
+
+    ": colon words execute correctly" >> {
+      eval.eval(":add1 1 +") mustEqual "add1\nok"
+      SymbolTable("add1") mustEqual Some(" 1 +")
+      eval.eval("1 add1") mustEqual "\nok\nok"
       Stack.length mustEqual 1
     }
   }
