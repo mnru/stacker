@@ -77,8 +77,30 @@ class StackerEval extends Evaluator {
     name
   }
 
+  def checkLength(needed: Int) {
+    val size = Stack.length
+    if (size < needed) {
+      throw new RuntimeException("operator requires %s stack elements, only %s found".format(needed, size))
+    }
+  }
+
   var trace = false
 
+
+  /**
+   * To implement:
+   * [] -> immediate words
+   * exec -> run an immediate word found on the stack
+   * div -> division
+   * rem -> remained
+   * true/false -> boolean
+   * lt -> v2 < v1 then pop true else false
+   * eq
+   * gt
+   * swap -> position swap
+   * sel -> Pop 3, if v3 is 0, then push v1 else v2. error if v3 is not number
+   * nget -> copies the given number (as v_i) from the stack positionally and places it on top of the stack
+   */
   def eval(body: String): String = {
     if (body.trim.startsWith(":")) {
       if (trace) { println("TRACE: define " + body) }
@@ -93,14 +115,17 @@ class StackerEval extends Evaluator {
           case "dup" => Stack.dup
           case "." => Stack.peek
           case "q" => print(System.exit(0))
+          case "-" => {
+            checkLength(2)
+            val v1 = Stack().asInstanceOf[Int]
+            val v2 = Stack().asInstanceOf[Int]
+            Stack(v2 - v1)
+          }
           case "+" => {
-            // take two from Stack, add them, push them onto the stack.
-            if (Stack.length < 2) {
-              throw new RuntimeException("operator requires 2 stack elements, only %s found".format(Stack.length))
-            }
-            val first = Stack().asInstanceOf[Int]
-            val second = Stack().asInstanceOf[Int]
-            Stack(first + second)
+            checkLength(2)
+            val v1 = Stack().asInstanceOf[Int]
+            val v2 = Stack().asInstanceOf[Int]
+            Stack(v2 + v1)
           }
           case "0" => Stack(0)
           case item: String => try {
