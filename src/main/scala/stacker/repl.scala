@@ -74,6 +74,6 @@ class StackerEval extends Evaluator {
         }
       }
     }
-    r.filter(r => !r.isInstanceOf[Unit]).mkString(" ") + "\nok"
+    r.filter(!_.isInstanceOf[Unit]).mkString(" ") + "\nok"
   }
 }
