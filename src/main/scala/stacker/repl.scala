@@ -92,10 +92,6 @@ class StackerEval extends Evaluator {
 
   /**
    * To implement:
-   * [] -> immediate words
-   * exec -> run an immediate word found on the stack
-   * div -> division
-   * rem -> remained
    * true/false -> boolean
    * lt -> v2 < v1 then pop true else false
    * eq
@@ -143,6 +139,18 @@ class StackerEval extends Evaluator {
             val v1 = Stack().asInstanceOf[Int]
             val v2 = Stack().asInstanceOf[Int]
             Stack(v2 + v1)
+          }
+          case "/" => {
+            checkLength(2)
+            val v1 = Stack().asInstanceOf[Int]
+            val v2 = Stack().asInstanceOf[Int]
+            Stack(v2 / v1)
+          }
+          case "%" => {
+            checkLength(2)
+            val v1 = Stack().asInstanceOf[Int]
+            val v2 = Stack().asInstanceOf[Int]
+            Stack(v2 % v1)
           }
           case "0" => Stack(0)
           case item: String => try {

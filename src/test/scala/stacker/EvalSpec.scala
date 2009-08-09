@@ -26,6 +26,16 @@ object EvalSpec extends Specification {
       eval.eval("+") must throwA[Exception]
     }
 
+    "1 1 / makes 1" >> {
+      eval.eval("1 1 /") mustEqual "\nok"
+      Stack() mustEqual 1
+    }
+
+    "1 1 % makes 0" >> {
+      eval.eval("1 1 %") mustEqual "\nok"
+      Stack() mustEqual 0
+    }
+
     ". does not remove anything from the Stack" >> {
       eval.eval("1 .") mustEqual "1\nok"
       Stack.length mustEqual 1
