@@ -86,6 +86,9 @@ class StackerEval extends Evaluator {
 
   var trace = false
 
+  // whether or not we are reading in an immediate word
+  var readImmediateWord = false
+  val immediateWord = new mutable.ListBuffer[String]()
 
   /**
    * To implement:
@@ -109,6 +112,20 @@ class StackerEval extends Evaluator {
       body.trim.split(" ").map { cmd =>
         if (trace) { println("TRACE: " + cmd) }
         cmd match {
+          case "[" => readImmediateWord = true
+          case "]" => {
+            readImmediateWord = false
+            Stack(immediateWord.mkString(" "))
+            immediateWord.clear()
+          }
+          case x if readImmediateWord => immediateWord += x
+          case "exec" => {
+            val word = Stack()
+            word match {
+              case w: String => eval(w)
+              case _ => throw new RuntimeException("can't execute immediate word as it's not a String")
+            }
+          }
           case "trace" => trace = true
           case "untrace" => trace = false
           case " " =>

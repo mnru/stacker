@@ -43,4 +43,16 @@ object EvalSpec extends Specification {
       Stack.length mustEqual 1
     }
   }
+
+  "immediate words" should {
+    "are stored on the Stack" >> {
+      eval.eval("[ 1 + ]") mustEqual "\nok"
+      Stack() mustEqual "1 +"
+    }
+
+    "exec runs an immediate word on the Stack" >> {
+      eval.eval("1 [ 1 + ] exec") mustEqual "\nok\nok"
+      Stack() mustEqual 2
+    }
+  }
 }
