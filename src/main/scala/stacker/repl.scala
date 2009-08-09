@@ -8,11 +8,13 @@ object Stack {
   val stack = new Stack[Any]
   def length = stack.length
 
+  def clear() = stack.clear
+
   def apply(): Any = {
     stack.pop
   }
 
-  def apply(o: Any) {
+  def apply(o: Any): Any = {
     stack.push(o)
     o
   }
@@ -52,10 +54,10 @@ class StackerEval extends Evaluator {
   def prompt = "%s] ".format(Stack.length)
   def eval(body: String): String = {
     val commands = body.split(" ")
-    commands.map { cmd =>
+    val r = commands.map { cmd =>
       cmd match {
         case "dup" => Stack.dup
-        case "." => println(Stack.peek)
+        case "." => Stack.peek
         case "q" => print(System.exit(0))
         case "+" => {
           // take two from Stack, add them, push them onto the stack.
@@ -72,6 +74,6 @@ class StackerEval extends Evaluator {
         }
       }
     }
-    "ok"
+    r.filter(r => !r.isInstanceOf[Unit]).mkString(" ") + "\nok"
   }
 }
