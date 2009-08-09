@@ -77,12 +77,18 @@ class StackerEval extends Evaluator {
     name
   }
 
+  var trace = false
+
   def eval(body: String): String = {
     if (body.trim.startsWith(":")) {
+      if (trace) { println("TRACE: define " + body) }
       defineWord(body.trim) + "\nok"
     } else {
       body.trim.split(" ").map { cmd =>
+        if (trace) { println("TRACE: " + cmd) }
         cmd match {
+          case "trace" => trace = true
+          case "untrace" => trace = false
           case " " =>
           case "dup" => Stack.dup
           case "." => Stack.peek
@@ -98,7 +104,6 @@ class StackerEval extends Evaluator {
           }
           case "0" => Stack(0)
           case item: String => try {
-            println("TRACE: " + cmd)
             val number = item.toInt
             Stack(number)
           } catch {
