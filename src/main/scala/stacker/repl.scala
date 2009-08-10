@@ -15,6 +15,11 @@ object Stack {
     stack.pop
   }
 
+  /**
+   * Returns a copy of whatever element is on the stack at position pos.
+   */
+  def look(pos: Int): Any = stack(pos)
+
   def apply(o: Any) {
     stack.push(o)
   }
@@ -103,7 +108,6 @@ class StackerEval extends Evaluator {
    * gt
    * swap -> position swap
    * sel -> Pop 3, if v3 is 0, then push v1 else v2. error if v3 is not number
-   * nget -> copies the given number (as v_i) from the stack positionally and places it on top of the stack
    */
   def eval(body: String): String = {
     if (body.trim.startsWith(":")) {
@@ -132,6 +136,10 @@ class StackerEval extends Evaluator {
           case " " =>
           case "dup" => Stack.dup
           case "." => Stack.peek
+          case "nget" => {
+            val position = Stack().asInstanceOf[Int]
+            Stack(Stack.look(position))
+          }
           case "q" => print(System.exit(0))
           case "-" => {
             val nums = getTop2()
