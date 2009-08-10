@@ -84,6 +84,11 @@ class StackerEval extends Evaluator {
     }
   }
 
+  def getTop2(): (Int, Int) = {
+    checkLength(2)
+    (Stack().asInstanceOf[Int], Stack().asInstanceOf[Int])
+  }
+
   var trace = false
 
   // whether or not we are reading in an immediate word
@@ -129,28 +134,20 @@ class StackerEval extends Evaluator {
           case "." => Stack.peek
           case "q" => print(System.exit(0))
           case "-" => {
-            checkLength(2)
-            val v1 = Stack().asInstanceOf[Int]
-            val v2 = Stack().asInstanceOf[Int]
-            Stack(v2 - v1)
+            val nums = getTop2()
+            Stack(nums._2 - nums._1)
           }
           case "+" => {
-            checkLength(2)
-            val v1 = Stack().asInstanceOf[Int]
-            val v2 = Stack().asInstanceOf[Int]
-            Stack(v2 + v1)
+            val nums = getTop2()
+            Stack(nums._2 + nums._1)
           }
           case "/" => {
-            checkLength(2)
-            val v1 = Stack().asInstanceOf[Int]
-            val v2 = Stack().asInstanceOf[Int]
-            Stack(v2 / v1)
+            val nums = getTop2()
+            Stack(nums._2 / nums._1)
           }
           case "%" => {
-            checkLength(2)
-            val v1 = Stack().asInstanceOf[Int]
-            val v2 = Stack().asInstanceOf[Int]
-            Stack(v2 % v1)
+            val nums = getTop2()
+            Stack(nums._2 % nums._1)
           }
           case "0" => Stack(0)
           case item: String => try {
