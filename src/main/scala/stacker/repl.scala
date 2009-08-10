@@ -106,7 +106,6 @@ class StackerEval extends Evaluator {
    * lt -> v2 < v1 then pop true else false
    * eq
    * gt
-   * swap -> position swap
    * sel -> Pop 3, if v3 is 0, then push v1 else v2. error if v3 is not number
    */
   def eval(body: String): String = {
@@ -139,6 +138,12 @@ class StackerEval extends Evaluator {
           case "nget" => {
             val position = Stack().asInstanceOf[Int]
             Stack(Stack.look(position))
+          }
+          case "swap" => {
+            val first = Stack()
+            val second = Stack()
+            Stack(first)
+            Stack(second)
           }
           case "q" => print(System.exit(0))
           case "-" => {

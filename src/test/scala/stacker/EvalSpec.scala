@@ -52,8 +52,15 @@ object EvalSpec extends Specification {
       eval.eval("1 add1") mustEqual "\nok\nok"
       Stack.length mustEqual 1
     }
+
     "nget copies the given number (as v_i) from the stack positionally and places it on top of the stack" >> {
       eval.eval("1 2 1 nget") mustEqual "\nok"
+      Stack() mustEqual 2
+    }
+
+    "swap swaps the place of the top two items on the stack" >> {
+      eval.eval("1 2 swap") mustEqual "\nok"
+      Stack() mustEqual 1
       Stack() mustEqual 2
     }
   }
