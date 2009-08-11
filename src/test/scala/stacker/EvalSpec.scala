@@ -63,6 +63,42 @@ object EvalSpec extends Specification {
       Stack() mustEqual 1
       Stack() mustEqual 2
     }
+
+    "gt" >> {
+      eval.eval("1 2 gt") mustEqual "\nok"
+      Stack() mustEqual "0"
+
+      eval.eval("1 0 gt") mustEqual "\nok"
+      Stack() mustEqual "1"
+    }
+
+    "lt" >> {
+      eval.eval("1 2 lt") mustEqual "\nok"
+      Stack() mustEqual "1"
+
+      eval.eval("2 1 lt") mustEqual "\nok"
+      Stack() mustEqual "0"
+    }
+
+    "eq 0" >> {
+      eval.eval("1 1 eq") mustEqual "\nok"
+      Stack() mustEqual "0"
+    }
+
+    "eq 1" >> {
+      eval.eval("1 2 eq") mustEqual "\nok"
+      Stack() mustEqual "1"
+    }
+
+    "sel 0" >> {
+      eval.eval("0 2 1 sel") mustEqual "\nok"
+      Stack() mustEqual 2
+    }
+
+    "sel 1" >> {
+      eval.eval("1 1 2 sel") mustEqual "\nok"
+      Stack() mustEqual 1
+    }
   }
 
   "immediate words" should {

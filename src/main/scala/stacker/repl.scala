@@ -102,10 +102,10 @@ class StackerEval extends Evaluator {
 
   /**
    * To implement:
-   * true/false -> boolean
-   * lt -> v2 < v1 then pop true else false
-   * eq
-   * gt
+   * test true/false -> boolean
+   * test lt -> v2 < v1 then push true else false
+   * test eq
+   * test gt
    * sel -> Pop 3, if v3 is 0, then push v1 else v2. error if v3 is not number
    */
   def eval(body: String): String = {
@@ -144,6 +144,40 @@ class StackerEval extends Evaluator {
             val second = Stack()
             Stack(first)
             Stack(second)
+          }
+          case "eq" => {
+            val nums = getTop2()
+            if (nums._1 == nums._2) {
+              Stack("0")
+            } else {
+              Stack("1")
+            }
+          }
+          case "lt" => {
+            val nums = getTop2()
+            if (nums._2.toInt < nums._1.toInt) {
+              Stack("1")
+            } else {
+              Stack("0")
+            }
+          }
+          case "gt" => {
+            val nums = getTop2()
+            if (nums._2.toInt > nums._1.toInt) {
+              Stack("1")
+            } else {
+              Stack("0")
+            }
+          }
+          // sel -> Pop 3, if v3 is 0, then push v1 else v2. error if v3 is not number
+          case "sel" => {
+            val nums = getTop2()
+            val pred = Stack()
+            if (pred == "0") {
+              Stack(nums._1)
+            } else {
+              Stack(nums._2)
+            }
           }
           case "q" => print(System.exit(0))
           case "-" => {
